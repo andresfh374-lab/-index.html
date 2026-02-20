@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Valentín Animado</title>
+    <style>
+        :root {
+            --letter: #ff4d6d;
+            --letter-love: 200px;
+            --bg-color: #0d1117;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Tu código corregido y transcrito */
+        .San_Valentin {
+            position: absolute;
+            width: 90%;
+            font-size: 2.5rem;
+            font-family: "Dancing Script", cursive; /* Fuente romántica */
+            height: var(--letter-love);
+            transform: translateX(-50%);
+            background: var(--letter);
+            left: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+            text-align: center;
+            top: 40%;
+            z-index: 10;
+        }
+
+        /* Animación de corazones de fondo */
+        .heart {
+            position: absolute;
+            background-color: #ff4d6d;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            transform: rotate(-45deg);
+            animation: move 5s infinite linear;
+            opacity: 0.7;
+        }
+
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+        }
+
+        .heart::before { top: -10px; left: 0; }
+        .heart::after { left: 10px; top: 0; }
+
+        @keyframes move {
+            0% { transform: rotate(-45deg) translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: rotate(-45deg) translateY(-100vh) scale(1.2); opacity: 0; }
+        }
+    </style>
+    <!-- Fuente romántica de Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+</head>
+<body>
+
+    <div class="San_Valentin">
+        Te Amo
+    </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+        setInterval(createHeart, 300);
+    </script>
+
+</body>
+</html>
