@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💕 Feliz 11 Meses Mi Reina 💕</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #0a0008;
+  overflow: hidden;
+  font-family: 'Georgia', serif;
+  cursor: none;
+  height: 100vh; width: 100vw;
+  user-select: none;
+}
+
+canvas#bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+#cursor {
+  position: fixed;
+  width: 28px; height: 28px;
+  font-size: 22px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: font-size 0.1s;
+  filter: drop-shadow(0 0 8px #ff4081);
+}
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  pointer-events: none;
+}
+
+.title-wrap {
+  text-align: center;
+  margin-bottom: 20px;
+  animation: title-appear 1.8s cubic-bezier(.34,1.56,.64,1) both;
+  pointer-events: all;
+}
+
+@keyframes title-appear {
+  from { opacity:0; transform: scale(0.4) translateY(-50px) rotateX(-30deg); }
+  to   { opacity:1; transform: scale(1) translateY(0) rotateX(0deg); }
+}
+
+.crown {
+  font-size: clamp(2rem,6vw,4rem);
+  display: block;
+  animation: crown-dance 2.5s ease-in-out infinite;
+}
+@keyframes crown-dance {
+  0%,100%{ transform: rotate(-10deg) scale(1) translateY(0); }
+  50%    { transform: rotate(10deg) scale(1.2) translateY(-8px); }
+}
+
+h1 {
+  font-size: clamp(2rem,7vw,5.5rem);
+  background: linear-gradient(90deg,#ff6fa3,#fff5f8,#ff4081,#ffb3c8,#fff,#ff6fa3);
+  background-size: 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+  font-style: italic;
+  line-height: 1.1;
+}
+@keyframes shimmer {
+  0%  { background-position: 0%; }
+  100%{ background-position: 400%; }
+}
+
+h2 {
+  font-size: clamp(0.9rem,2.8vw,1.6rem);
+  color: #ffb3c8;
+  font-style: italic;
+  margin-top: 8px;
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+@keyframes pulse-soft{ 0%,100%{opacity:1} 50%{opacity:0.55} }
+
+.bubbles-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(500px, 92vw);
+  pointer-events: all;
+}
+
+.bubble {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,140,170,0.35);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 20px;
+  padding: 13px 22px;
+  color: #fff0f5;
+  font-size: clamp(0.8rem,2.1vw,1rem);
+  text-align: center;
+  line-height: 1.6;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.3s;
+  animation: bubble-in 0.8s cubic-bezier(.34,1.56,.64,1) both;
+  box-shadow: 0 6px 28px rgba(255,64,129,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.bubble:hover {
+  transform: perspective(700px) rotateX(-8deg) rotateY(2deg) scale(1.05) translateY(-5px);
+  box-shadow: 0 22px 55px rgba(255,64,129,0.5), 0 0 35px rgba(255,100,150,0.3);
+  background: rgba(255,255,255,0.13);
+}
+@keyframes bubble-in {
+  from{ opacity:0; transform:perspective(700px) rotateX(-45deg) translateY(-20px) scale(0.75); }
+  to  { opacity:1; transform:perspective(700px) rotateX(0deg) translateY(0) scale(1); }
+}
+.bubble:nth-child(1){animation-delay:.2s}
+.bubble:nth-child(2){animation-delay:.45s}
+.bubble:nth-child(3){animation-delay:.7s}
+.bubble:nth-child(4){animation-delay:.95s}
+.bubble:nth-child(5){animation-delay:1.2s}
+.bubble.special {
+  animation-delay:1.45s;
+  background: linear-gradient(135deg, rgba(255,64,129,.22), rgba(200,0,80,.12));
+  border-color: rgba(255,64,129,.65);
+  font-size: clamp(1rem,2.8vw,1.25rem);
+  font-style:italic; font-weight:bold;
+  color:#fff;
+  animation: bubble-in .8s cubic-bezier(.34,1.56,.64,1) 1.45s both, glow-loop 2.5s ease-in-out 2.5s infinite;
+}
+@keyframes glow-loop {
+  0%,100%{ box-shadow:0 6px 28px rgba(255,64,129,.25); }
+  50%    { box-shadow:0 6px 60px rgba(255,64,129,.8), 0 0 40px rgba(255,150,180,.5); }
+}
+
+.ic{ margin-right:5px; }
+
+#hint {
+  position:fixed; bottom:18px; left:50%;
+  transform:translateX(-50%);
+  color:rgba(255,180,200,.5);
+  font-size:.78rem; font-style:italic;
+  z-index:20; pointer-events:none;
+  animation:hint-blink 3s ease-in-out infinite;
+}
+@keyframes hint-blink{ 0%,100%{opacity:.4} 50%{opacity:1} }
+
+.ripple {
+  position:fixed; border-radius:50%;
+  border:2px solid rgba(255,100,150,.75);
+  pointer-events:none; z-index:50;
+  transform:translate(-50%,-50%);
+  animation:ripple-out 1s ease forwards;
+}
+@keyframes ripple-out {
+  from{ width:0; height:0; opacity:1; }
+  to  { width:220px; height:220px; opacity:0; }
+}
+
+.burst {
+  position:fixed; pointer-events:none;
+  z-index:100; font-size:1.5rem;
+  transform:translate(-50%,-50%);
+}
+</style>
+</head>
+<body>
+
+<div id="cursor">❤️</div>
+<canvas id="bg"></canvas>
+
+<div id="overlay">
+  <div class="title-wrap">
+    <span class="crown">👑</span>
+    <h1>¡Feliz 11 Meses<br>Mi Reina!</h1>
+    <h2>Cada día a tu lado es un regalo ✨</h2>
+  </div>
+
+  <div class="bubbles-container">
+    <div class="bubble"><span class="ic">💖</span>Gracias por tu amor incondicional, mi vida entera.</div>
+    <div class="bubble"><span class="ic">🥰</span>Gracias por tu compañía en cada momento especial.</div>
+    <div class="bubble"><span class="ic">😂❤️</span>Por todas las risas y lágrimas que hemos compartido.</div>
+    <div class="bubble"><span class="ic">🌸</span>Gracias por los momentos tan lindos a tu lado.</div>
+    <div class="bubble"><span class="ic">🌹</span>Eres la persona más hermosa de mi universo entero.</div>
+    <div class="bubble special">💕 Te Amo, Mi Reina Hermosa 👸 — Para Siempre 💕</div>
+  </div>
+</div>
+
+<div id="hint">✨ Toca o haz clic en cualquier lugar para magia ✨</div>
+
+<script>
+// ── SETUP ──────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('bg');
+const ctx    = canvas.getContext('2d');
+const cursor = document.getElementById('cursor');
+let W, H, mouseX = 0.5, mouseY = 0.5;
+
+function resize(){
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── CURSOR ─────────────────────────────────────────────────────────────────
+const cursorSet = ['❤️','💕','🌹','✨','💖','🌸','💓','🩷','🌺'];
+let ci = 0;
+
+document.addEventListener('mousemove', e=>{
+  cursor.style.left = e.clientX+'px';
+  cursor.style.top  = e.clientY+'px';
+  mouseX = e.clientX/W;
+  mouseY = e.clientY/H;
+});
+
+// ── PARTICLE CLASS (3D) ────────────────────────────────────────────────────
+const HEARTS_E = ['❤️','💕','💓','💗','💖','💝','💞','❤️‍🩹','🩷'];
+const ROSES_E  = ['🌹','🌸','🌺','💐','🌷'];
+
+class P {
+  constructor(type){
+    this.type  = type || (Math.random()<.7?'heart':'rose');
+    this.reset(true);
+  }
+  reset(init){
+    this.x    = Math.random()*W;
+    this.y    = init ? Math.random()*H : H+70;
+    this.z    = 100 + Math.random()*900;
+    this.vx   = (Math.random()-.5)*.7;
+    this.vy   = -(Math.random()*1.4+.4);
+    this.vz   = (Math.random()-.5)*1.8;
+    this.rot  = Math.random()*360;
+    this.rotV = (Math.random()-.5)*3;
+    this.size = 14 + Math.random()*22;
+    this.sw   = Math.random()*Math.PI*2;
+    this.swS  = .008 + Math.random()*.018;
+    this.alpha= init ? Math.random() : 0;
+    this.emoji= this.type==='rose'
+      ? ROSES_E[Math.floor(Math.random()*ROSES_E.length)]
+      : HEARTS_E[Math.floor(Math.random()*HEARTS_E.length)];
+  }
+  update(){
+    this.sw += this.swS;
+    this.x  += this.vx + Math.sin(this.sw)*.6;
+    this.y  += this.vy;
+    this.z  += this.vz;
+    this.rot+= this.rotV;
+    if(this.alpha < 1) this.alpha = Math.min(1, this.alpha+.025);
+    if(this.y<-90 || this.z<5 || this.z>1100) this.reset();
+  }
+  draw(){
+    const fov   = 700;
+    const ox    = (mouseX-.5)*90;
+    const oy    = (mouseY-.5)*60;
+    const scale = fov/(fov+this.z-350);
+    const sx    = (this.x - W/2 + ox)*scale + W/2;
+    const sy    = (this.y - H/2 + oy)*scale + H/2;
+    const sz    = this.size * scale;
+    const a     = this.alpha * Math.min(1, scale*2.2);
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.translate(sx,sy);
+    ctx.rotate(this.rot*Math.PI/180);
+    ctx.font = `${sz}px serif`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(this.emoji, 0, 0);
+    ctx.restore();
+  }
+}
+
+// ── POOL ───────────────────────────────────────────────────────────────────
+const pool = [];
+for(let i=0;i<55;i++) pool.push(new P('heart'));
+for(let i=0;i<22;i++) pool.push(new P('rose'));
+setInterval(()=>{ if(pool.length<150) pool.push(new P()); }, 350);
+
+// ── SPARKLE STARS ──────────────────────────────────────────────────────────
+const stars = Array.from({length:140}, ()=>({
+  x: Math.random(),
+  y: Math.random(),
+  r: .3+Math.random()*1.6,
+  a: Math.random(),
+  va:(.02+Math.random()*.02)*(Math.random()<.5?1:-1)
+}));
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+let t = 0;
+function draw(){
+  t += .008;
+
+  // Animated radial bg
+  const cx = (.5+(mouseX-.5)*.08)*W;
+  const cy = (.5+(mouseY-.5)*.08)*H;
+  const bg = ctx.createRadialGradient(cx,cy,0, cx,cy,Math.hypot(W,H)*.75);
+  bg.addColorStop(0,   '#3a0030');
+  bg.addColorStop(.35, '#1d0016');
+  bg.addColorStop(.7,  '#0e0009');
+  bg.addColorStop(1,   '#05000a');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,W,H);
+
+  // Glow orbs (mouse-driven)
+  [[mouseX*.8+.1, mouseY*.6+.1,'#78003a',220],
+   [1-mouseX*.7,  1-mouseY*.6, '#44002a',180],
+   [.5+Math.sin(t)*.2, .5+Math.cos(t*.7)*.15,'#ff004433',130]
+  ].forEach(([rx,ry,c,r])=>{
+    const g = ctx.createRadialGradient(rx*W,ry*H,0, rx*W,ry*H,r);
+    g.addColorStop(0,c); g.addColorStop(1,'transparent');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  });
+
+  // Stars twinkle
+  stars.forEach(s=>{
+    s.a += s.va;
+    if(s.a<=0||s.a>=1) s.va*=-1;
+    ctx.beginPath();
+    ctx.arc(s.x*W, s.y*H, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,220,235,${s.a.toFixed(2)})`;
+    ctx.fill();
+  });
+
+  // Particles
+  pool.forEach(p=>{ p.update(); p.draw(); });
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ── CLICK / TAP ─────────────────────────────────────────────────────────────
+const burstPool = ['❤️','💕','🌹','✨','💖','🌸','💓','⭐','🩷','🌺','💝'];
+
+function doClick(cx, cy){
+  // Rotate cursor emoji
+  ci=(ci+1)%cursorSet.length;
+  cursor.textContent = cursorSet[ci];
+
+  // 3 concentric ripples
+  for(let i=0;i<3;i++){
+    const r=document.createElement('div');
+    r.className='ripple';
+    r.style.cssText=`left:${cx}px;top:${cy}px;animation-delay:${i*.12}s;
+      border-color:rgba(255,${80+i*40},${130+i*30},${.9-i*.2})`;
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(), 1300);
+  }
+
+  // Emoji burst
+  const n = 8+Math.floor(Math.random()*7);
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');
+    el.className='burst';
+    el.textContent=burstPool[Math.floor(Math.random()*burstPool.length)];
+    const angle=(i/n)*Math.PI*2 + Math.random()*.5;
+    const dist =55+Math.random()*90;
+    const tx=Math.cos(angle)*dist, ty=Math.sin(angle)*dist;
+    el.style.cssText=`left:${cx}px;top:${cy}px;font-size:${1.1+Math.random()*.9}rem`;
+    document.body.appendChild(el);
+    el.animate([
+      {transform:`translate(-50%,-50%) scale(.2)`, opacity:1},
+      {transform:`translate(calc(-50% + ${tx}px),calc(-50% + ${ty}px)) scale(1.1)`, opacity:1, offset:.55},
+      {transform:`translate(calc(-50% + ${tx*1.5}px),calc(-50% + ${ty*1.5}px)) scale(.7)`, opacity:0}
+    ],{duration:1300, easing:'cubic-bezier(.22,1,.36,1)', fill:'forwards'});
+    setTimeout(()=>el.remove(),1400);
+  }
+
+  // Spawn particle at click
+  const p=new P(Math.random()<.6?'heart':'rose');
+  p.x=cx; p.y=cy; p.vy=-2.8; p.alpha=1;
+  pool.push(p);
+}
+
+document.addEventListener('click', e=>doClick(e.clientX, e.clientY));
+
+document.addEventListener('touchstart', e=>{
+  const t=e.touches[0];
+  cursor.style.left=t.clientX+'px';
+  cursor.style.top =t.clientY+'px';
+  doClick(t.clientX, t.clientY);
+},{passive:true});
+
+document.addEventListener('touchmove', e=>{
+  const t=e.touches[0];
+  cursor.style.left=t.clientX+'px';
+  cursor.style.top =t.clientY+'px';
+  mouseX=t.clientX/W;
+  mouseY=t.clientY/H;
+},{passive:true});
+</script>
+</body>
+</html>
